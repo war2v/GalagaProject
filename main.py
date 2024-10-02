@@ -23,6 +23,10 @@ fps = settings.frame_per_second
 clock = pygame.time.Clock()
 bg_color = (0, 0, 0)
 
+def draw_text(text, font, text_col, x, y):
+    img = font.render (text, True, text_col)
+    window.blit(img, (x, y))
+
 
 
 #         setting up all objects in game         #
@@ -30,12 +34,12 @@ bg_color = (0, 0, 0)
 def main_menu():
     pygame.display.set_caption("Ruin Hunter Main Menu")
     background = Background()
+    background_gp = pygame.sprite.Group(background)
     active = True
     rec = pygame.Rect(0,1,2,3)
     while active:
-        
-        background_gp = pygame.sprite.Group(background)
 
+        
 
         for event in pygame.event.get():
             match event.type:
@@ -46,7 +50,8 @@ def main_menu():
                         case pygame.K_0:
                             play()
         background_gp.update()  
-        background_gp.draw(window)  
+        background_gp.draw(window) 
+        draw_text("0: Start Game", font, text_color, 250, 400) 
         pygame.display.update()
     pygame.quit()
 
@@ -96,7 +101,7 @@ def play():
                     quit()
                 case pygame.KEYDOWN:
                     match event.key:
-                        case pygame.K_p:
+                        case pygame.K_0:
                             active = False
                             main_menu()
                         case pygame.K_SPACE:

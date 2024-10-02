@@ -26,5 +26,6 @@ class HUD(pygame.sprite.Sprite):
 
     def update(self):
         self.health_bar_gp.update()
+
         self.rect.x += self.vel_x
         self.rect.y += self.vel_y

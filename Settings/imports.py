@@ -1,4 +1,4 @@
-import pygame
+import pygame, sys
 from Crafts.Ship_BP import Ship_BP
 from Background.HUD import HUD
 from Background.Debris.DebrisSpawner import SpawnDebris
