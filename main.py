@@ -22,6 +22,7 @@ window = pygame.display.set_mode(settings.size)
 fps = settings.frame_per_second
 clock = pygame.time.Clock()
 bg_color = (0, 0, 0)
+current_ship = 0
 
 def draw_text(text, font, text_col, x, y):
     img = font.render (text, True, text_col)
@@ -37,6 +38,12 @@ def main_menu():
     background_gp = pygame.sprite.Group(background)
     active = True
     rec = pygame.Rect(0,1,2,3)
+
+    # Main Music
+    pygame.mixer.music.load('GAS/Sounds/music/Text3.ogg')
+    pygame.mixer.music.set_volume(.4)
+    pygame.mixer.music.play(loops=True)
+
     while active:
 
         
@@ -49,14 +56,59 @@ def main_menu():
                     match event.key:
                         case pygame.K_0:
                             play()
+                        case pygame.K_2:
+                            edit_ship()
         background_gp.update()  
         background_gp.draw(window) 
         draw_text("0: Start Game", font, text_color, 250, 400) 
+        draw_text("1: Options", font, text_color, 250, 300)
+        draw_text("2: Edit Ship", font, text_color, 250, 200)  
         pygame.display.update()
     pygame.quit()
 
 
+def edit_ship():
+    global current_ship
+    pygame.display.set_caption("Edit Ship")
+    background = Background()
+    background_gp = pygame.sprite.Group(background)
+    player = Ship_BP()
+    player_gp = pygame.sprite.Group(player)
+    while True:
+        for event in pygame.event.get():
+            match event.type:
+                case pygame.QUIT:
+                    pygame.quit()
+                    quit()
+                case pygame.QUIT:
+                    active = False
+                case pygame.KEYDOWN:
+                    match event.key:
+                        case pygame.K_0:
+                            main_menu()
+                        case pygame.K_1:
+                            player.change_craft_type(0)
+                            current_ship = 0
+                        case pygame.K_2:
+                            player.change_craft_type(1)
+                            current_ship = 1
+                        case pygame.K_3:
+                            player.change_craft_type(2)
+                            current_ship = 2
+                        case pygame.K_4:
+                            player.change_craft_type(3)
+                            current_ship = 3
+
+        background_gp.update()  
+        background_gp.draw(window) 
+        player_gp.draw(window)
+        pygame.display.update()
+
+
+
 def play():
+    global current_ship
+    print(current_ship)
     pygame.display.set_caption("Ruin Hunter")
     #Background set up
     background = Background()
@@ -65,11 +117,12 @@ def play():
 
     # player set up
     player = Ship_BP()
+    player.change_craft_type(current_ship)
     user_HUD = HUD.HUD()
     user_HUD_gp = pygame.sprite.Group(user_HUD)
     player_gp = pygame.sprite.Group(player)
 
-    # Enemies set up
+    # Enemies set upd
     spawn_enemy = SpawnEnemies()
 
     # Set up Debris
@@ -78,6 +131,10 @@ def play():
     destroyed_enemys = 0
     respawn_timer = 15
 
+    # Main Music
+    pygame.mixer.music.load('GAS/Sounds/music/halo.ogg')
+    pygame.mixer.music.set_volume(.5)
+    pygame.mixer.music.play(loops=True)
     
 
 
@@ -113,7 +170,7 @@ def play():
                                         player.fireBullet() 
                             else:
                                 #display to screen "PRESS SPACE TO RESPAWN"
-                                player = Ship_BP()
+                                player = Ship_BP(current_ship)
                                 player_gp.add(player)
                         case pygame.K_TAB:
                             match player.weapon_choice:

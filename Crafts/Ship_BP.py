@@ -14,7 +14,8 @@ class Ship_BP(pygame.sprite.Sprite):
     def __init__(self, craft_type = 0):
         super(Ship_BP, self).__init__()
 
-        self.image = pygame.image.load(CraftType.craft[craft_type]).convert_alpha()
+        self.craft_type = craft_type
+        self.image = pygame.image.load(CraftType.craft[self.craft_type]).convert_alpha()
         self.image = pygame.transform.scale(self.image, (self.image.get_width()*3, self.image.get_height()*3))
         self.MACShot_Sound = pygame.mixer.Sound('GAS/Sounds/shot.ogg')
         self.MACShot_Sound.set_volume(0.2)
@@ -94,6 +95,19 @@ class Ship_BP(pygame.sprite.Sprite):
 
         
 
+    def change_craft_type(self, craft_type):
+        match(craft_type):
+            case 0:
+                self.craft_type = 0
+            case 1:
+                self.craft_type = 1
+            case 2:
+                self.craft_type = 2
+            case 3:
+                self.craft_type = 3
+            
+        self.image = pygame.image.load(CraftType.craft[self.craft_type]).convert_alpha()
+        self.image = pygame.transform.scale(self.image, (self.image.get_width()*3, self.image.get_height()*3))
 
     def fireMAC(self):
 
@@ -150,8 +164,8 @@ class Ship_BP(pygame.sprite.Sprite):
         self.hp -= 1
 
 
-    def spawn(self): 
-        self.__init__()
+    def spawn(self, craft_type): 
+        self.__init__(craft_type)
 
     
     def destroy(self):

@@ -18,10 +18,7 @@ class Background(pygame.sprite.Sprite):
         self.stars = pygame.sprite.Group()
         self.timer = randrange(2, 13)
         
-        # Main Music
-        pygame.mixer.music.load('GAS/Sounds/music/halo.ogg')
-        pygame.mixer.music.set_volume(.5)
-        pygame.mixer.music.play(loops=True)
+        
 
     
     def update(self):
